@@ -1,0 +1,32 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  repo-hygiene:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Required files exist
+        run: |
+          for f in README.md LICENSE .gitignore .env.example; do
+            test -f "$f" || { echo "Missing $f"; exit 1; }
+          done
+
+      - name: No env file tracked
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$'; then
+            echo "A .env file is tracked. Remove it and rotate its values."
+            exit 1
+          fi
+
+      - name: No long dashes in docs
+        run: |
+          if grep -rIl --include='*.md' "$(printf '\342\200\224')" . ; then
+            echo "Long dash found in a markdown file."
+            exit 1
+          fi

@@ -1,0 +1,21 @@
+meta {
+  name: 01 list people
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/rest/people
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{apiKey}}
+}
+
+tests {
+  test("status 200", function () {
+    expect(res.status).to.equal(200);
+  });
+}

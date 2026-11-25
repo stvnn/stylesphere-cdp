@@ -29,3 +29,7 @@ infra/volumes/
 # Power BI local caches
 *.pbix
 .pbi/
+
+# Twenty (AGPL): fichiers telecharges, non versionnes
+infra/twenty/docker-compose.yml
+infra/twenty/.env
